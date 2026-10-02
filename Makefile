@@ -4,7 +4,7 @@ CXXFLAGS += -Wall -Wextra
 
 CPPFLAGS +=	-I ./include
 
-MAIN	:= 	main.cpp	\
+MAIN	:= 	src/cpp/main.cpp	\
 
 SRC_DIR	:=	src/
 
