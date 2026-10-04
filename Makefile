@@ -6,11 +6,11 @@ CPPFLAGS +=	-I ./include
 
 MAIN	:= 	src/cpp/main.cpp	\
 
-SRC_DIR	:=	src/
+SRC_DIR	:=	src/cpp/
 
 OBJ_DIR	:=	obj/
 
-SRC		:=		
+SRC		:=	
 
 SRC		:=	$(addprefix $(SRC_DIR), $(SRC:=.cpp))
 
@@ -26,11 +26,11 @@ $(NAME): $(OBJ_MAIN) $(OBJ)
 	$(CXX) -o $(NAME) $(OBJ_MAIN) $(OBJ)
 
 obj/%.o: %.cpp
-	mkdir -p obj
+	mkdir -p $(dir $@)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
 
 obj/%.o: $(SRC_DIR)%.cpp
-	mkdir -p obj
+	mkdir -p $(dir $@)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
 
 clean:
