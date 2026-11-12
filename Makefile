@@ -1,45 +1,18 @@
-CXX := g++
+NAME := raytracer
 
-CXXFLAGS += -Wall -Wextra
+BUILD_DIR := build
 
-CPPFLAGS +=	-I ./include
-
-MAIN	:= 	src/cpp/main.cpp	\
-
-SRC_DIR	:=	src/
-
-OBJ_DIR	:=	obj/
-
-SRC		:=		
-
-SRC		:=	$(addprefix $(SRC_DIR), $(SRC:=.cpp))
-
-OBJ_MAIN :=	$(patsubst %.cpp, $(OBJ_DIR)%.o, $(MAIN))
-
-OBJ		:=	$(patsubst $(SRC_DIR)%.cpp, $(OBJ_DIR)%.o, $(SRC))
-
-NAME	:=	raytracer
-
-all: $(NAME)
-
-$(NAME): $(OBJ_MAIN) $(OBJ)
-	$(CXX) -o $(NAME) $(OBJ_MAIN) $(OBJ)
-
-obj/%.o: %.cpp
-	mkdir -p obj
-	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
-
-obj/%.o: $(SRC_DIR)%.cpp
-	mkdir -p obj
-	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
+all:
+	cmake -S . -B $(BUILD_DIR) -DOpenCV_DIR=/usr/local/lib64/cmake/opencv4
+	cmake --build $(BUILD_DIR) -j$(shell nproc)
+	cp $(BUILD_DIR)/$(NAME) ./$(NAME)
 
 clean:
-	$(RM) -r $(OBJ_DIR)
-	$(RM) $(OBJ) $(OBJ_MAIN)
+	$(RM) -r $(BUILD_DIR)
 
-fclean:	clean
+fclean: clean
 	$(RM) $(NAME)
 
-re:	fclean all
+re: fclean all
 
-.PHONY: all re clean fclean
+.PHONY: all clean fclean re
