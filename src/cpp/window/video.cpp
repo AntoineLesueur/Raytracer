@@ -2,14 +2,42 @@
 #include <iostream>
 #include <opencv2/opencv.hpp>
 
-VideoManager::VideoManager(std::string filename)
+VideoManager::VideoManager() : is_playing(false), filename("")
+{
+}
+
+VideoManager::VideoManager(std::string &filename)
 {
     this->filename = filename;
     this->is_playing = false;
 }
 
-std::uint8_t VideoManager::Load(std::string filename)
+VideoManager::~VideoManager()
 {
+    
+}
+
+std::uint8_t VideoManager::Load()
+{
+    video.open(filename);
+    std::cout << filename << std::endl;
+    if (!video.isOpened()) {
+        std::cout << "VideoManage::Load : Can't read video" << std::endl;
+        return FAILURE;   
+    }
+
+    return SUCCESS;
+}
+
+std::uint8_t VideoManager::Update(sf::Sprite &img)
+{
+    cv::Mat frame;
+
+    if (!video.read(frame) || frame.empty())
+        return FAILURE;
+
+    texture = convert_mat2texture(frame);
+    img.setTexture(texture, true);
     return SUCCESS;
 }
 
