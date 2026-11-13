@@ -1,32 +1,28 @@
 #include "video/video.h"
 
-static bool update_video(sf::Clock &clock, sf::Sprite &img, VideoManager &video)
-{
-    if (clock.getElapsedTime().asSeconds() >= 1.f / 30.f) {
-        if (video.Update(img) != SUCCESS)
-            return false;
-        clock.restart();
-    }
-    return true;
-}
-
 static void open_window(sf::RenderWindow &window)
 {
-    /*sf::Sprite img;
+    sf::Event event;
     std::string filename = "";
     VideoManager video(filename);
-    if (video.Load() != SUCCESS)
-        return;
-    */
-    sf::Event event;
-    sf::Clock clock;
     
+    if (SUCCESS != video.Load()) {
+        return;
+    }
+    if (SUCCESS != video.Play()) {
+        return;
+    }
+
     while (window.isOpen()) {
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed)
                 window.close();
         }
+        if (SUCCESS != video.Update()) {
+            break;
+        }
         window.clear();
+        video.Draw(window);
         window.display();
     }
 }
