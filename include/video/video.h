@@ -21,20 +21,28 @@ class VideoManager {
         ~VideoManager();
         std::uint8_t Load();
         std::uint8_t Play();
-        std::uint8_t Pause();
-        std::uint8_t Stop();
         std::uint8_t Draw(sf::RenderWindow &window);
-        std::uint8_t Update(sf::Sprite &img);
+        std::uint8_t Update();
+        void Move();
+        void Resize();
 
     private:
         bool is_playing;
         std::string filename;
         sf::Texture texture;
+        sf::Sprite img;
         cv::VideoCapture video;
+        sf::Clock clock;
         float pos_x_start;
         float pos_y_start;
         float pos_x_end;
         float pos_y_end;
+        float size_x;
+        float size_y;
+    
+    protected:
+        void Set_size();
+        void Set_pos();
 };
 
 sf::Texture convert_mat2texture(cv::Mat &mat);
