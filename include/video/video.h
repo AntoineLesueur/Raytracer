@@ -25,24 +25,55 @@ class VideoManager {
         std::uint8_t Update();
         void Move();
         void Resize();
+        void Set_size();
+        void ManageMouse(sf::RenderWindow &window);
+        void Set_pos();
+
+        sf::Vector2f Get_pos();
+        sf::Vector2f Get_size();
+
 
     private:
         bool is_playing;
+    
         std::string filename;
+    
+        cv::VideoCapture video;
+    
         sf::Texture texture;
         sf::Sprite img;
-        cv::VideoCapture video;
         sf::Clock clock;
+        sf::FloatRect bounds;
+        sf::Vector2f size;
+        sf::Vector2f size_bef;
+        sf::Vector2f size_aft;
+        sf::Vector2f pos;
+
+        sf::FloatRect dim;
+
         float pos_x_start;
         float pos_y_start;
         float pos_x_end;
         float pos_y_end;
-        float size_x;
-        float size_y;
     
     protected:
-        void Set_size();
-        void Set_pos();
+        void Up_top();
+        void Up_left();
+        void Up_right();
+        void Up_bottom();
+
+        void Down_top();
+        void Down_left();
+        void Down_right();
+        void Down_bottom();
+
+        bool Detect_right(sf::Vector2i &mouse_pos);
+        bool Detect_top(sf::Vector2i &mouse_pos);
+        bool Detect_left(sf::Vector2i &mouse_pos);
+        bool Detect_bott(sf::Vector2i &mouse_pos);
+
+        sf::FloatRect Get_dim();
+        void Set_dim();
 };
 
 sf::Texture convert_mat2texture(cv::Mat &mat);
